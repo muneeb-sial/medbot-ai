@@ -17,10 +17,7 @@ def create_book_collection():
 def get_book_collection() -> WeaviateVectorStore:
     if  weviate_db_client.is_live():
         print("✅ weviate is ready")
-        
-    print("✅ 1")
     collection = weviate_db_client.collections.exists("book_collection")
-    print("✅ 2")
     if not collection:
         print("Collection 'book_collection' does not exist in Weaviate.")
         create_book_collection()
