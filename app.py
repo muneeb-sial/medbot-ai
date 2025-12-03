@@ -4,7 +4,17 @@ from jobs.bulk_insert import read_dir
 import asyncio
 from services.book_service import BookService
 from services.llm_service import LlmService
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)   
 
 book_collection = get_book_collection()
 
