@@ -40,7 +40,11 @@ async def read_dir(path: str):
                     docs.append(Document(page_content=chunk, metadata=metadata))
                 print(f"✅ appended {filename}")
     print(f"🚧 Total documents to add: {len(docs)}")
-    await book_collection.aadd_documents(docs)
+    for doc in docs:
+        print("🚧 adding document with metadata:", doc.metadata)
+        await book_collection.aadd_documents([doc])
+        print("✅ added document with metadata:", doc.metadata)
+    # await book_collection.aadd_documents(docs)
     print(f"Inserted documents into book collection.")
 
 # read_dir("./books/batch-1")

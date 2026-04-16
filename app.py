@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.concurrency import asynccontextmanager
 from app_collections.book_collection import get_book_collection
 from jobs.bulk_insert import read_dir
 import asyncio
@@ -14,10 +15,17 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+
 )   
 
 book_collection = get_book_collection()
 
+# @asynccontextmanager    
+# async def lifespan(app: FastAPI):
+    # await read_dir("./books/batch-1")
+    # yield
+
+# app = FastAPI(lifespan=lifespan)
 # asyncio.create_task(read_dir("./books/batch-1"))
 
 @app.get("/")
@@ -38,7 +46,7 @@ def read_root():
 #     return {"data": books}
 
 @app.get("/llm")
-def read_root3(query: str):
+def call_llm(query: str):
     print("LLM called")
     obj = LlmService()
     return obj.chat_with_documents_streaming_output(query)
