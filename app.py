@@ -1,53 +1,28 @@
-from fastapi import FastAPI
-from fastapi.concurrency import asynccontextmanager
+from dotenv import load_dotenv
+load_dotenv()
+
+from config.server.fastapi import app
 from app_collections.book_collection import get_book_collection
-from jobs.bulk_insert import read_dir
-import asyncio
-from services.book_service import BookService
-from services.llm_service import LlmService
-from fastapi.middleware.cors import CORSMiddleware
+from routes.chat_routes import chat_router
 
-app = FastAPI()
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-
-)   
 
 book_collection = get_book_collection()
 
-# @asynccontextmanager    
-# async def lifespan(app: FastAPI):
-    # await read_dir("./books/batch-1")
-    # yield
-
-# app = FastAPI(lifespan=lifespan)
-# asyncio.create_task(read_dir("./books/batch-1"))
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello World"}
+    return {"message": "healthy!"}
 
-# @app.get("/query",)
-# def read_root():
-#     obj = BookService()
-#     query = "what if Adult Still disease"
-#     books = obj.get_relevevant_books(query)
-#     return {"data": books}
 
-# @app.get("/id",)
-# def read_root2(id: str):
-#     obj = BookService()
-#     books = obj.get_documents_by_doc_ids([id])
-#     return {"data": books}
+app.include_router(chat_router)
 
-@app.get("/llm")
-def call_llm(query: str):
-    print("LLM called")
-    obj = LlmService()
-    return obj.chat_with_documents_streaming_output(query)
 
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        "app:app",
+        port=5001,
+        log_level="info",
+        reload=True,
+    )
