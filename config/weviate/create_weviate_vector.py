@@ -1,9 +1,14 @@
 from pydantic import BaseModel
 from pydantic import ValidationError
-from sentence_transformers import SentenceTransformer
 from config.vector_store_client.weviate import weviate_db_client
 from typing import TypeVar
+from config.embeddings.sentense_transformer import EmbeddingsFactory
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+embeddings = EmbeddingsFactory()
+Tokenizer = embeddings.embedding
+T = TypeVar("T", bound=BaseModel)
+
 
 def chunk_text(text: str, chunk_size: int = 1000, chunk_overlap: int = 120):
     splitter = RecursiveCharacterTextSplitter(
@@ -12,9 +17,6 @@ def chunk_text(text: str, chunk_size: int = 1000, chunk_overlap: int = 120):
         separators=["\n\n", "\n", ".", " ", ""]
     )
     return splitter.split_text(text)
-
-Tokenizer = SentenceTransformer("all-MiniLM-L6-v2")
-T = TypeVar("T", bound=BaseModel)
 
 
 def create_weviate_db_vector(

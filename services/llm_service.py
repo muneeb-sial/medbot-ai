@@ -1,9 +1,6 @@
-from config.llm.Ollama.llama3 import llm
-# from config.llm.Ollama.qwen25 import llm
 from langchain.messages import HumanMessage, SystemMessage
 from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver  
-from services.book_service import BookService
 import json, random, asyncio
 from fastapi.responses import StreamingResponse
 

@@ -1,9 +1,13 @@
 from langchain.tools import tool
 from aiocache import cached
+from services.document_service import DocumentService
+
+
+document_service = DocumentService()
 
 @cached(ttl=60)
 async def document_search(query):
-    pass
+    return document_service.get_relevevant_documents(query)
 
 @tool(
     name_or_callable="document_search_tool",

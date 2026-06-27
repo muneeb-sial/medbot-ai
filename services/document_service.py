@@ -1,14 +1,14 @@
-from app_collections.book_collection import get_book_collection
+from app_collections.documents_collection import get_document_collection
 from weaviate.classes.query import Filter
 
-class BookService:
+class DocumentService:
     def __init__(self):
-        self.book_store = get_book_collection()
+        self.document_store = get_document_collection()
         
-    def get_relevevant_books(self, user_query):
+    def get_relevevant_documents(self, user_query):
        if not user_query:
            raise ValueError("User query cannot be empty")
-       docs = self.book_store.similarity_search(user_query ,k=10)
+       docs = self.document_store.similarity_search(user_query ,k=10)
        return self.prepare_data_for_response(docs)
    
     def prepare_data_for_response(self, docs):
