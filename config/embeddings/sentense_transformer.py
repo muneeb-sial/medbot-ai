@@ -6,3 +6,5 @@ class EmbeddingsFactory:
         print("🚧 Initializing EmbeddingsFactory...")
         self.embedding = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
         print("✅ HuggingFaceEmbeddings initialized.")
+        
+embedding = EmbeddingsFactory().embedding

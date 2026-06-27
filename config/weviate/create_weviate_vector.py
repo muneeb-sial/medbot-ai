@@ -2,11 +2,10 @@ from pydantic import BaseModel
 from pydantic import ValidationError
 from config.vector_store_client.weviate import weviate_db_client
 from typing import TypeVar
-from config.embeddings.sentense_transformer import EmbeddingsFactory
+from config.embeddings.sentense_transformer import embedding
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-embeddings = EmbeddingsFactory()
-Tokenizer = embeddings.embedding
+Tokenizer = embedding
 T = TypeVar("T", bound=BaseModel)
 
 

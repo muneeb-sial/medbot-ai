@@ -1,11 +1,11 @@
-from app_collections.book_collection import get_book_collection
+from app_collections.documents_collection import get_document_collection
 from datetime import datetime
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import uuid
 from langchain_core.documents import Document
 import os
 
-book_collection = get_book_collection()
+document_collection = get_document_collection()
 
 splitter = RecursiveCharacterTextSplitter(
     chunk_size=500,
@@ -42,7 +42,7 @@ async def read_dir(path: str):
     print(f"🚧 Total documents to add: {len(docs)}")
     for doc in docs:
         print("🚧 adding document with metadata:", doc.metadata)
-        await book_collection.aadd_documents([doc])
+        await document_collection.aadd_documents([doc])
         print("✅ added document with metadata:", doc.metadata)
     # await book_collection.aadd_documents(docs)
     print(f"Inserted documents into book collection.")
